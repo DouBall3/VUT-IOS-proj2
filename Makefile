@@ -1,4 +1,4 @@
-NAME = main
+NAME = proj2
 EXEC = $(NAME)
 sources = $(NAME).c
 
