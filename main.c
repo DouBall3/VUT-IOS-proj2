@@ -30,54 +30,81 @@ sem_t *allSignedIn;
 sem_t *imc;
 sem_t *isJudge;
 
+FILE *out;
+
 void start(int ID)
 {
-
-    printf("%d: IMM %d : starts\n", *counter, ID);
+    FILE* outFile = fopen("proj2.out", "a");
+    fprintf(outFile, "%d: IMM %d : starts\n", *counter, ID);
+    fclose(outFile);
 
 }
 
 void imen(int ID){
-    printf("%d: IMM %d: enters: %d: %d: %d\n", *counter, ID, hall->entered, hall->checked, hall->building);
+    FILE* outFile = fopen("proj2.out", "a");
+    fprintf(outFile, "%d: IMM %d: enters: %d: %d: %d\n", *counter, ID, hall->entered, hall->checked, hall->building);
+    fclose(outFile);
 }
 
 void imwc(int ID){
-    printf("%d: IMM %d: wants certificate: %d: %d: %d\n", *counter, ID, hall->entered, hall->checked, hall->building);
+    FILE* outFile = fopen("proj2.out", "a");
+    fprintf(outFile, "%d: IMM %d: wants certificate: %d: %d: %d\n", *counter, ID, hall->entered, hall->checked, hall->building);
+    fclose(outFile);
 }
 
 void imgc(int ID){
-    printf("%d: IMM %d: got certificate: %d: %d: %d\n", *counter, ID, hall->entered, hall->checked, hall->building);
+    FILE* outFile = fopen("proj2.out", "a");
+    fprintf(outFile, "%d: IMM %d: got certificate: %d: %d: %d\n", *counter, ID, hall->entered, hall->checked, hall->building);
+    fclose(outFile);
 }
 
 void imle(int ID){
-    printf("%d: IMM %d: leaves: %d: %d: %d\n", *counter, ID, hall->entered, hall->checked, hall->building);
+    FILE* outFile = fopen("proj2.out", "a");
+    fprintf(outFile, "%d: IMM %d: leaves: %d: %d: %d\n", *counter, ID, hall->entered, hall->checked, hall->building);
+    fclose(outFile);
 }
 
 void jven(){
-    printf("%d: JUDGE: wants to enter\n", *counter);
+    FILE* outFile = fopen("proj2.out", "a");
+    fprintf(outFile, "%d: JUDGE: wants to enter\n", *counter);
+    fclose(outFile);
 }
 void jent(){
     hall->judge = 1;
-    printf("%d: JUDGE: enters: %d: %d: %d\n", *counter, hall->entered, hall->checked, hall->building);
+    FILE* outFile = fopen("proj2.out", "a");
+    fprintf(outFile, "%d: JUDGE: enters: %d: %d: %d\n", *counter, hall->entered, hall->checked, hall->building);
+    fclose(outFile);
 }
 void jwait(){
-    printf("%d: JUDGE: waits for imm: %d: %d: %d\n",*counter, hall->entered, hall->checked, hall->building);
+    FILE* outFile = fopen("proj2.out", "a");
+    fprintf(outFile, "%d: JUDGE: waits for imm: %d: %d: %d\n",*counter, hall->entered, hall->checked, hall->building);
+    fclose(outFile);
 }
 void jstart(){
-    printf("%d: JUDGE: starts confirmation: %d: %d: %d\n",*counter, hall->entered, hall->checked, hall->building);
+    FILE* outFile = fopen("proj2.out", "a");
+    fprintf(outFile, "%d: JUDGE: starts confirmation: %d: %d: %d\n",*counter, hall->entered, hall->checked, hall->building);
+    fclose(outFile);
 }
 void jend(){
-    printf("%d: JUDGE: ends confirmation: %d: %d: %d\n",*counter, hall->entered, hall->checked, hall->building);
+    FILE* outFile = fopen("proj2.out", "a");
+    fprintf(outFile, "%d: JUDGE: ends confirmation: %d: %d: %d\n",*counter, hall->entered, hall->checked, hall->building);
+    fclose(outFile);
 }
 void jleaves(){
     hall->judge = 0;
-    printf("%d: JUDGE: leaves: %d: %d: %d\n",*counter, hall->entered, hall->checked, hall->building);
+    FILE* outFile = fopen("proj2.out", "a");
+    fprintf(outFile, "%d: JUDGE: leaves: %d: %d: %d\n",*counter, hall->entered, hall->checked, hall->building);
+    fclose(outFile);
 }
 void jfinish(){
-    printf("%d: JUDGE: finishes\n",*counter);
+    FILE* outFile = fopen("proj2.out", "a");
+    fprintf(outFile, "%d: JUDGE: finishes\n",*counter);
+    fclose(outFile);
 }
 void check(int ID){
-    printf("%d: IMM %d: checks: %d: %d: %d\n", *counter, ID, hall->entered, hall->checked, hall->building);
+    FILE* outFile = fopen("proj2.out", "a");
+    fprintf(outFile, "%d: IMM %d: checks: %d: %d: %d\n", *counter, ID, hall->entered, hall->checked, hall->building);
+    fclose(outFile);
 }
 
 void createImigrants(int, int, int);
@@ -139,12 +166,13 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    FILE *outFile = fopen("proj2.out", "w");
-    if(outFile == NULL)
+    out = fopen("proj2.out", "w");
+    if(out == NULL)
     {
         fprintf(stderr, "Problem s pristupem do souboru");
         return 1;
     }
+    fclose(out);
     setbuf(stdout, NULL);
     setbuf(stderr, NULL);
 
@@ -208,7 +236,7 @@ int main(int argc, char* argv[]) {
     shm_unlink("/xdohna45_hall");
     shm_unlink("/xdohna45_counter");
     shm_unlink("/xdohna45_imcount");
-
+    
 }
 
 void createImigrants(int PI, int IG, int IT){
@@ -325,7 +353,7 @@ static void judge(int JG, int JT){
         jent();
         sem_post(count);
         sem_post(mutex);
-        
+
 
             if (hall->entered > hall->checked) {
                 sem_wait(count);
