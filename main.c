@@ -178,7 +178,6 @@ int main(int argc, char* argv[]) {
     allSignedIn = sem_open("/xdohna45_allSignedIn", O_CREAT, 0666, 0);
     count = sem_open("/xdohna45_count", O_CREAT, 0666,1);
     imc = sem_open("/xdohna45_imc", O_CREAT, 0666, 1);
-    isJudge = sem_open("/xdohna45_judge", O_CREAT, 0666, 1);
     pid_t parrentPid;
     pid_t pid = fork();
 
@@ -198,7 +197,6 @@ int main(int argc, char* argv[]) {
     sem_close(allSignedIn);
     sem_close(count);
     sem_close(imc);
-    sem_close(isJudge);
 
     sem_unlink("/xdohna45_mutex");
     sem_unlink("/xdohna45_noJudge");
@@ -206,7 +204,6 @@ int main(int argc, char* argv[]) {
     sem_unlink("/xdohna45_allSignedIn");
     sem_unlink("/xdohna45_count");
     sem_unlink("/xdohna45_imc");
-    sem_unlink("/xdohna45_judge");
 
     shm_unlink("/xdohna45_hall");
     shm_unlink("/xdohna45_counter");
@@ -269,7 +266,6 @@ static void imigrant(int ID, int IT){
     sem_wait(mutex);
     hall->checked++;
     check(ID);
-    //sem_post(mutex);
     sem_post(count);
 
 
@@ -277,7 +273,6 @@ static void imigrant(int ID, int IT){
    if(hall->judge == 1 && hall->entered == hall->checked) sem_post(allSignedIn);
     else sem_post(mutex);
 
-    sem_wait(isJudge);
     sem_wait(confirmed);
 
     sem_wait(count);
@@ -330,8 +325,7 @@ static void judge(int JG, int JT){
         jent();
         sem_post(count);
         sem_post(mutex);
-
-        sem_post(isJudge);
+        
 
             if (hall->entered > hall->checked) {
                 sem_wait(count);
