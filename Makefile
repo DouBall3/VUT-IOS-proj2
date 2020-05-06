@@ -28,4 +28,4 @@ cleanshm:
 
 cleanall: clean cleanshm
 	$(RM) $(EXEC)
-
+	./kill
